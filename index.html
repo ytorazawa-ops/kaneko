@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#185FA5">
+<title>清掃作業報告</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:#f5f5f0;color:#1a1a18;font-size:16px;line-height:1.5}
+
+/* ---- App shell ---- */
+#app{height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ---- Header ---- */
+.hdr{flex-shrink:0;height:56px;background:#fff;border-bottom:1px solid #e8e8e2;display:flex;align-items:center;padding:0 16px;gap:10px;position:relative}
+.hdr-logo{width:32px;height:32px;background:#185FA5;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hdr-logo svg{width:18px;height:18px}
+.hdr h1{font-size:16px;font-weight:500;flex:1;text-align:center}
+.hdr .back-btn{position:absolute;left:16px;display:flex;align-items:center;gap:4px;font-size:14px;color:#185FA5;font-weight:500;cursor:pointer;padding:8px 0}
+.step-badge{position:absolute;right:16px;font-size:11px;color:#185FA5;background:#E6F1FB;padding:4px 10px;border-radius:20px;font-weight:500;white-space:nowrap}
+
+/* ---- Scrollable body ---- */
+.screen-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;display:flex;flex-direction:column;gap:12px;background:#f5f5f0}
+.screen-body.center{justify-content:center;align-items:center;gap:20px}
+
+/* ---- Form elements ---- */
+.lbl{font-size:12px;font-weight:500;color:#6b6b65;margin-bottom:6px;display:block;letter-spacing:.02em}
+.lbl span{font-weight:400;color:#999}
+
+.dd-wrap{position:relative}
+.dd-trigger{width:100%;background:#fff;border:1px solid #d8d8d0;border-radius:10px;padding:13px 14px;font-size:15px;color:#1a1a18;display:flex;align-items:flex-start;justify-content:space-between;cursor:pointer;gap:8px;min-height:52px}
+.dd-trigger.open{border-color:#185FA5;border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom-color:transparent}
+.dd-val-wrap{flex:1;min-width:0}
+.dd-name{font-size:15px;font-weight:500;color:#1a1a18}
+.dd-addr{font-size:11px;color:#888;margin-top:2px}
+.dd-chevron{flex-shrink:0;margin-top:3px;transition:transform .2s;color:#999}
+.dd-chevron.open{transform:rotate(180deg)}
+.dd-menu{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #185FA5;border-top:none;border-bottom-left-radius:10px;border-bottom-right-radius:10px;overflow-y:auto;max-height:280px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.dd-item{padding:12px 14px;font-size:14px;color:#1a1a18;cursor:pointer;border-bottom:0.5px solid #f0f0ea;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;transition:background .1s;user-select:none}
+.dd-item:last-child{border-bottom:none}
+.dd-item:active{background:#E6F1FB}
+.dd-item.on{background:#E6F1FB}
+.dd-item .di-name{font-weight:500}
+.dd-item.on .di-name{color:#0C447C}
+.dd-item .di-addr{font-size:11px;color:#888;margin-top:2px}
+.dd-check{flex-shrink:0;margin-top:2px;color:#185FA5}
+
+.inp{width:100%;background:#fff;border:1px solid #185FA5;border-radius:10px;padding:14px;font-size:16px;color:#1a1a18;outline:none;font-family:inherit}
+.inp.plain{border-color:#d8d8d0}
+.inp:focus{border-color:#185FA5;box-shadow:0 0 0 3px rgba(24,95,165,.12)}
+.sel-wrap{width:100%;background:#fff;border:1px solid #d8d8d0;border-radius:10px;padding:13px 14px;font-size:15px;color:#1a1a18;display:flex;align-items:center;justify-content:space-between;cursor:pointer;min-height:52px}
+.sel-wrap:active{background:#f8f8f4}
+
+.work-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.work-pill{background:#E6F1FB;border:1px solid #c0d4ea;border-radius:20px;padding:8px 18px;font-size:14px;color:#0C447C;cursor:pointer;user-select:none;transition:all .15s;font-weight:500}
+.work-pill.on{background:#185FA5;color:#fff;border-color:#185FA5}
+.work-pill:active{opacity:.8}
+
+/* ---- Buttons ---- */
+.btn{width:100%;height:56px;border:none;border-radius:12px;font-size:16px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:opacity .15s;font-family:inherit;-webkit-font-smoothing:antialiased}
+.btn:active{opacity:.85}
+.btn-primary{background:#185FA5;color:#fff}
+.btn-green{background:#1d9e75;color:#fff}
+.btn-dark{background:#0C447C;color:#fff}
+.btn-secondary{background:#fff;color:#185FA5;border:1px solid #c0d4ea}
+.btn-secondary:active{background:#E6F1FB}
+.btn-warn{background:#fff;color:#A32D2D;border:1.5px solid #F09595}
+.btn-cam{background:#0C447C;color:#fff}
+
+/* ---- Cards & chips ---- */
+.card{background:#fff;border:1px solid #e0e0d8;border-radius:12px;padding:14px 16px}
+.card-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:0.5px solid #f0f0ea;font-size:14px}
+.card-row:last-child{border:none}
+.card-row .rk{color:#6b6b65}
+.card-row .rv{font-weight:500;text-align:right}
+
+.time-chip{background:#E6F1FB;border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.time-chip .tc-l{font-size:12px;color:#185FA5;font-weight:500}
+.time-chip .tc-v{font-size:20px;font-weight:500;color:#0C447C}
+
+.info-chip{background:#E6F1FB;border-radius:8px;padding:9px 13px;font-size:13px;color:#0C447C;font-weight:500}
+
+.save-badge{background:#EAF3DE;border:1px solid #C0DD97;border-radius:9px;padding:10px 14px;display:flex;align-items:center;gap:9px;font-size:12px;color:#27500A}
+.save-badge svg{flex-shrink:0}
+
+.resume-banner{background:#FAEEDA;border:1px solid #FAC775;border-radius:10px;padding:12px 14px;display:flex;align-items:flex-start;gap:9px}
+.resume-banner .rb-body{flex:1}
+.resume-banner .rb-title{font-size:13px;font-weight:500;color:#633806;margin-bottom:4px}
+.resume-banner .rb-sub{font-size:12px;color:#854F0B;margin-bottom:8px}
+.resume-btn{width:100%;background:#fff;border:1px solid #FAC775;border-radius:8px;padding:7px 14px;font-size:12px;color:#633806;font-weight:500;cursor:pointer;font-family:inherit}
+.resume-btn:active{background:#FAEEDA}
+
+.master-note{background:#f0f4f8;border-radius:9px;padding:10px 13px;display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#555;line-height:1.7}
+.master-note svg{flex-shrink:0;margin-top:1px}
+
+.section-sep{height:1px;background:#e8e8e2;margin:0 -16px}
+
+/* ---- Area selection ---- */
+.area-item{background:#fff;border:1px solid #d8d8d0;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;font-size:15px;color:#1a1a18;cursor:pointer;user-select:none;transition:all .15s}
+.area-item.on{border-color:#185FA5;background:#E6F1FB}
+.area-item:active{opacity:.8}
+.chk{width:24px;height:24px;border-radius:7px;border:1.5px solid #c8c8c0;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.chk.on{background:#185FA5;border-color:#185FA5}
+
+/* ---- Progress ---- */
+.prog-wrap{display:flex;flex-direction:column;gap:8px}
+.prog-meta{display:flex;justify-content:space-between;align-items:center}
+.prog-dots{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.prog-dot{width:10px;height:10px;border-radius:50%;background:#d0d8e4;transition:background .2s}
+.prog-dot.done{background:#1d9e75}
+.prog-dot.cur{background:#185FA5}
+.prog-bar{background:#e8e8e2;border-radius:20px;height:5px;overflow:hidden}
+.prog-fill{height:100%;background:#185FA5;border-radius:20px;transition:width .3s}
+
+/* ---- Phase tabs ---- */
+.phase-tabs{display:flex;background:#eeede8;border-radius:10px;padding:3px;gap:2px}
+.phase-tab{flex:1;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;color:#888;cursor:pointer;transition:all .15s;user-select:none}
+.phase-tab.on{background:#fff;color:#185FA5;border:0.5px solid #d0d8e4}
+
+/* ---- Photo slot ---- */
+.photo-slot{background:#fff;border:2px dashed #c8c8c0;border-radius:12px;height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;position:relative;overflow:hidden;transition:border-color .2s}
+.photo-slot.taken{border-style:solid;border-color:#d0d8e4}
+.photo-slot:active{opacity:.9}
+.photo-preview{width:100%;height:100%;object-fit:cover;display:block}
+.photo-placeholder{display:flex;flex-direction:column;align-items:center;gap:8px}
+.photo-placeholder svg{color:#c0c0b8}
+.photo-placeholder span{font-size:13px;color:#aaa}
+.retake-btn{position:absolute;bottom:10px;right:10px;background:rgba(255,255,255,.92);border:0.5px solid #c8c8c0;border-radius:8px;padding:5px 12px;font-size:12px;color:#555;font-weight:500;cursor:pointer;font-family:inherit}
+.hidden-input{position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;cursor:pointer}
+
+textarea.txt-area{width:100%;background:#fff;border:1px solid #d8d8d0;border-radius:10px;padding:12px 14px;font-size:14px;color:#333;min-height:80px;line-height:1.7;resize:none;font-family:inherit;outline:none}
+textarea.txt-area:focus{border-color:#185FA5}
+
+/* ---- Stats ---- */
+.stats{display:flex;gap:8px}
+.stat{flex:1;background:#E6F1FB;border-radius:10px;padding:12px 8px;text-align:center}
+.stat-n{font-size:26px;font-weight:500;color:#0C447C}
+.stat-l{font-size:11px;color:#185FA5;margin-top:3px}
+
+/* ---- Thumb grid ---- */
+.thumb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.thumb{aspect-ratio:1;background:#c8d4de;border-radius:9px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#c8d4de}
+.thumb-badge{position:absolute;top:4px;left:4px;font-size:9px;font-weight:500;padding:2px 6px;border-radius:4px;color:#fff}
+.thumb-badge.b{background:#185FA5}
+.thumb-badge.d{background:#BA7517}
+.thumb-badge.a{background:#1d9e75}
+.thumb-label{position:absolute;bottom:4px;right:4px;font-size:9px;color:#fff;background:rgba(0,0,0,.4);padding:2px 5px;border-radius:3px}
+
+/* ---- Complete screen ---- */
+.done-icon{width:80px;height:80px;background:#EAF3DE;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.done-icon svg{width:40px;height:40px}
+
+/* ---- Loading ---- */
+.loading-box{background:#fff;border:1px solid #e0e0d8;border-radius:13px;padding:28px;display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+.spinner{width:40px;height:40px;border:3px solid #E6F1FB;border-top-color:#185FA5;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-progress{font-size:13px;color:#185FA5;font-weight:500;text-align:center}
+.loading-sub{font-size:12px;color:#6b6b65;text-align:center;line-height:1.7}
+
+/* ---- Error ---- */
+.error-banner{background:#FCEBEB;border:1px solid #F09595;border-radius:11px;padding:14px 16px;display:flex;flex-direction:column;gap:9px}
+.error-title{font-size:14px;font-weight:500;color:#791F1F;display:flex;align-items:center;gap:7px}
+.error-body{font-size:13px;color:#A32D2D;line-height:1.7}
+
+.steps-guide{background:#f0f4f8;border-radius:11px;padding:14px 16px;font-size:13px;color:#333;line-height:2.0}
+.steps-guide .guide-title{font-weight:500;margin-bottom:4px;font-size:14px}
+
+.status-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:0.5px solid #f0f0ea;font-size:13px}
+.status-row:last-child{border:none}
+.status-ok{color:#1d9e75;font-weight:500}
+.status-ng{color:#E24B4A;font-weight:500}
+
+.note-footer{text-align:center;font-size:12px;color:#6b6b65;padding:4px 0}
+
+/* ---- Slide transitions ---- */
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden}
+.screen.active{display:flex}
+
+/* Overlay for dropdown close */
+#dd-overlay{position:fixed;inset:0;z-index:50;display:none}
+#dd-overlay.show{display:block}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- 画面1: 物件選択 -->
+  <div class="screen active" id="screen-0">
+    <div class="hdr">
+      <div class="hdr-logo">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14V8l6 4-6 4z"/></svg>
+      </div>
+      <h1>清掃作業報告</h1>
+      <span class="step-badge">1 / 5</span>
+    </div>
+    <div class="screen-body">
+
+      <!-- 再開バナー -->
+      <div class="resume-banner" id="resume-banner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div class="rb-body">
+          <div class="rb-title">前回の未送信データがあります</div>
+          <div class="rb-sub" id="resume-desc">読み込み中...</div>
+          <button class="resume-btn" onclick="resumeFromSave()">前回データでレポート生成 →</button>
+        </div>
+      </div>
+
+      <!-- 物件選択 -->
+      <div>
+        <span class="lbl">物件名 <span id="prop-count"></span></span>
+        <div class="dd-wrap">
+          <div class="dd-trigger" id="dd-trigger" onclick="toggleDD()">
+            <div class="dd-val-wrap">
+              <div class="dd-name" id="dd-selected-name">読み込み中...</div>
+              <div class="dd-addr" id="dd-selected-addr"></div>
+            </div>
+            <svg class="dd-chevron" id="dd-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="dd-menu" id="dd-menu" style="display:none"></div>
+        </div>
+      </div>
+
+      <!-- 作業内容 -->
+      <div>
+        <span class="lbl">作業内容</span>
+        <div class="work-pills" id="work-pills"></div>
+      </div>
+
+      <!-- 担当者 -->
+      <div>
+        <span class="lbl">担当者名</span>
+        <div class="sel-wrap" onclick="openStaffPicker()">
+          <span id="staff-display">選択してください</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+
+      <!-- 作業人数 -->
+      <div>
+        <span class="lbl">作業人数</span>
+        <input class="inp plain" type="number" id="staff-num" value="2" min="1" max="20" inputmode="numeric">
+      </div>
+
+      <div class="master-note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        物件・担当者リストはGoogleスプレッドシートで管理。事務所で追加・変更できます。
+      </div>
+
+      <button class="btn btn-primary" onclick="startWork()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        作業開始
+      </button>
+    </div>
+  </div>
+
+  <!-- 画面2: エリア選択 -->
+  <div class="screen" id="screen-1">
+    <div class="hdr">
+      <button class="back-btn" onclick="goScreen(0)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        戻る
+      </button>
+      <h1>エリア選択</h1>
+      <span class="step-badge">2 / 5</span>
+    </div>
+    <div class="screen-body">
+      <div class="time-chip">
+        <span class="tc-l">作業開始</span>
+        <span class="tc-v" id="start-time-display">--:--</span>
+      </div>
+      <div class="info-chip" id="prop-work-display"></div>
+      <div class="section-sep"></div>
+      <span class="lbl" id="area-label">清掃するエリアを選択</span>
+      <div id="area-list"></div>
+      <button class="btn btn-primary" onclick="startShooting()" id="shoot-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="4"/><path d="M9 5l1-2h4l1 2"/></svg>
+        撮影を開始する
+      </button>
+    </div>
+  </div>
+
+  <!-- 画面3: 写真撮影 -->
+  <div class="screen" id="screen-2">
+    <div class="hdr">
+      <button class="back-btn" onclick="goScreen(1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        戻る
+      </button>
+      <h1 id="shoot-title" style="font-size:14px"></h1>
+      <span class="step-badge">3 / 5</span>
+    </div>
+    <div class="screen-body">
+      <div class="prog-wrap">
+        <div class="prog-meta">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:13px;color:#6b6b65" id="area-counter">エリア 1/1</span>
+            <div class="prog-dots" id="area-dots"></div>
+          </div>
+          <span style="font-size:13px;color:#185FA5;font-weight:500" id="photo-counter">撮影 0/0</span>
+        </div>
+        <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      </div>
+
+      <div class="save-badge">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#27500A" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v14a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+        データは自動保存中 — 通信が切れても再開できます
+      </div>
+
+      <div class="phase-tabs">
+        <div class="phase-tab" id="tab-0" onclick="setPhase(0)">作業前</div>
+        <div class="phase-tab" id="tab-1" onclick="setPhase(1)">作業中</div>
+        <div class="phase-tab" id="tab-2" onclick="setPhase(2)">作業後</div>
+      </div>
+
+      <!-- 写真スロット -->
+      <div class="photo-slot" id="photo-slot" onclick="triggerCamera()">
+        <div class="photo-placeholder" id="photo-placeholder">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="4"/></svg>
+          <span>タップして撮影</span>
+        </div>
+        <img id="photo-preview" class="photo-preview" style="display:none" alt="撮影済み">
+        <button class="retake-btn" id="retake-btn" style="display:none" onclick="triggerCamera(event)">撮り直す</button>
+        <input type="file" accept="image/*" capture="environment" id="camera-input" class="hidden-input" onchange="onPhotoTaken(event)" style="opacity:0;position:absolute;width:1px;height:1px">
+      </div>
+
+      <!-- 作業中コメント -->
+      <div id="comment-section" style="display:none">
+        <span class="lbl">作業内容コメント</span>
+        <textarea class="txt-area" id="comment-text" rows="3" placeholder="例：洗剤散布・ポリッシャー洗浄"></textarea>
+      </div>
+
+      <button class="btn btn-cam" onclick="triggerCamera()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="4"/><path d="M9 5l1-2h4l1 2"/></svg>
+        <span id="cam-btn-label">カメラで撮影</span>
+      </button>
+
+      <button class="btn btn-secondary" id="next-btn" onclick="nextStep()">
+        <span id="next-btn-label"></span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- 画面4: 確認 -->
+  <div class="screen" id="screen-3">
+    <div class="hdr">
+      <button class="back-btn" onclick="goScreen(2)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        戻る
+      </button>
+      <h1>内容確認</h1>
+      <span class="step-badge">4 / 5</span>
+    </div>
+    <div class="screen-body" id="confirm-body">
+      <!-- JS で生成 -->
+    </div>
+  </div>
+
+  <!-- 画面4b: 生成中 -->
+  <div class="screen" id="screen-3b">
+    <div class="hdr">
+      <div class="hdr-logo">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14V8l6 4-6 4z"/></svg>
+      </div>
+      <h1>レポート生成中</h1>
+      <span class="step-badge">4 / 5</span>
+    </div>
+    <div class="screen-body">
+      <div class="loading-box">
+        <div class="spinner"></div>
+        <div class="loading-progress" id="loading-msg">写真をアップロード中...</div>
+        <div class="loading-sub" id="loading-sub">3 / 6枚完了<br>通信が切れた場合も自動で再開します</div>
+        <div class="prog-bar" style="width:100%"><div class="prog-fill" id="gen-prog" style="width:30%"></div></div>
+      </div>
+      <button class="btn btn-warn" onclick="simulateError()" style="margin-top:4px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        エラー発生時の画面を確認（デモ）
+      </button>
+    </div>
+  </div>
+
+  <!-- 画面4c: エラー -->
+  <div class="screen" id="screen-3c">
+    <div class="hdr" style="background:#E24B4A">
+      <div class="hdr-logo" style="background:rgba(255,255,255,.25)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <h1 style="color:white">送信エラー</h1>
+      <span class="step-badge" style="background:rgba(255,255,255,.25);color:white">4 / 5</span>
+    </div>
+    <div class="screen-body">
+      <div class="error-banner">
+        <div class="error-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#791F1F" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          レポートの生成に失敗しました
+        </div>
+        <div class="error-body">通信が不安定なため、Googleサーバーへの接続が中断されました。<br><strong style="color:#791F1F">データは端末に保存済みです。</strong>写真・入力内容はすべて保持されています。</div>
+      </div>
+      <div class="card">
+        <div class="status-row"><span class="rk">写真アップロード</span><span class="status-ok" id="upload-status">3/6枚 完了</span></div>
+        <div class="status-row"><span class="rk">レポート生成</span><span class="status-ng">未完了</span></div>
+        <div class="status-row"><span class="rk">ローカル保存</span><span class="status-ok">保存済み</span></div>
+      </div>
+      <div class="steps-guide">
+        <div class="guide-title">対処方法</div>
+        1. 電波の良い場所に移動する<br>
+        2.「再試行」ボタンを押す<br>
+        3. 失敗が続く場合は事務所に連絡
+      </div>
+      <button class="btn btn-primary" onclick="retryGenerate()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 019-9 9.75 9.75 0 016.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+        再試行する
+      </button>
+      <button class="btn btn-secondary" onclick="goScreen(3)">入力内容を確認・修正する</button>
+      <div class="note-footer">事務所でも作業ログから再生成できます</div>
+    </div>
+  </div>
+
+  <!-- 画面5: 完了 -->
+  <div class="screen" id="screen-4">
+    <div class="hdr">
+      <div class="hdr-logo">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14V8l6 4-6 4z"/></svg>
+      </div>
+      <h1>作業完了</h1>
+      <span class="step-badge">5 / 5</span>
+    </div>
+    <div class="screen-body center">
+      <div class="done-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#27500A" stroke-width="2.5"><polyline points="4 12 10 18 20 6"/></svg>
+      </div>
+      <div style="text-align:center">
+        <p style="font-size:20px;font-weight:500;margin-bottom:6px">レポート生成完了</p>
+        <p style="font-size:14px;color:#6b6b65">Google Driveに自動保存されました</p>
+      </div>
+      <div class="card" style="width:100%">
+        <div class="card-row"><span class="rk">ファイル名</span><span class="rv" style="font-size:12px" id="done-filename">—</span></div>
+        <div class="card-row"><span class="rk">保存先</span><span class="rv" style="color:#185FA5">Google Drive</span></div>
+        <div class="card-row"><span class="rk">作業時間</span><span class="rv" id="done-duration">—</span></div>
+        <div class="card-row"><span class="rk">ローカルデータ</span><span class="rv" style="font-size:12px;color:#6b6b65">次回起動時に削除</span></div>
+      </div>
+      <button class="btn btn-dark" style="width:100%" onclick="openDrive()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Google Driveで確認する
+      </button>
+      <button class="btn btn-secondary" style="width:100%" onclick="resetApp()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 019-9 9.75 9.75 0 016.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+        新しい作業を開始
+      </button>
+    </div>
+  </div>
+
+</div><!-- #app -->
+
+<!-- DD overlay -->
+<div id="dd-overlay" onclick="closeDD()"></div>
+
+<!-- Staff picker (native select hidden) -->
+<select id="staff-select" style="display:none" onchange="onStaffChange(this.value)"></select>
+
+<script>
+// ========== マスタデータ ==========
+const MASTER = [
+  {id:'P001',name:'HI五反田ビル',addr:'東京都品川区西五反田2-11-17',works:['ガラス清掃'],areas:{'ガラス清掃':['外面ガラス(ロープ)','内面ガラス','エントランス']},comments:{'ガラス清掃':'・シャンプースクイジー'}},
+  {id:'P002',name:'サンハイム田町',addr:'東京都港区芝5-13-5',works:['定期清掃'],areas:{'定期清掃':['共用廊下','1Fエントランス','共用階段']},comments:{'定期清掃':'・洗剤散布\n・ポリッシャー洗浄\n・汚水回収\n・水拭き'}},
+  {id:'P003',name:'東京プリンスホテル',addr:'東京都港区芝公園3-3-1',works:['絨毯クリーニング'],areas:{'絨毯クリーニング':['客室ベッド下','客室ベッド下隅除塵','廊下','EVホール','廊下隅除塵後フィルター']},comments:{'絨毯クリーニング':'・アップライト吸塵\n・隅除塵\n・洗剤散布\n・ポリッシャー洗浄'}},
+  {id:'P004',name:'グランドパレス渋谷',addr:'東京都渋谷区道玄坂1-12-1',works:['定期清掃','ガラス清掃'],areas:{'定期清掃':['エントランス','共用廊下','EV内'],'ガラス清掃':['外面ガラス','内面ガラス']},comments:{'定期清掃':'・洗剤散布\n・モップ拭き','ガラス清掃':'・シャンプースクイジー'}},
+  {id:'P005',name:'青山コートビル',addr:'東京都港区南青山3-8-40',works:['定期清掃'],areas:{'定期清掃':['1Fロビー','共用トイレ','非常階段']},comments:{'定期清掃':'・洗剤散布\n・ポリッシャー洗浄'}},
+  {id:'P006',name:'新橋SYビル',addr:'東京都港区新橋2-20-15',works:['ガラス清掃','定期清掃'],areas:{'ガラス清掃':['外面ガラス','内面ガラス','共用窓'],'定期清掃':['廊下','エントランス']},comments:{'ガラス清掃':'・シャンプースクイジー','定期清掃':'・洗剤散布\n・水拭き'}},
+  {id:'P007',name:'品川イーストタワー',addr:'東京都港区港南2-16-1',works:['定期清掃','絨毯クリーニング'],areas:{'定期清掃':['1Fエントランス','共用廊下','EV内','非常階段'],'絨毯クリーニング':['会議室A','会議室B','役員室']},comments:{'定期清掃':'・洗剤散布\n・モップ拭き','絨毯クリーニング':'・アップライト吸塵\n・洗剤散布'}},
+  {id:'P008',name:'代官山レジデンス',addr:'東京都渋谷区猿楽町29-9',works:['定期清掃'],areas:{'定期清掃':['共用廊下','駐車場','ゴミ置き場','エントランス']},comments:{'定期清掃':'・洗剤散布\n・ポリッシャー洗浄\n・水拭き'}},
+  {id:'P009',name:'六本木センタービル',addr:'東京都港区六本木3-2-1',works:['ガラス清掃','定期清掃'],areas:{'ガラス清掃':['外面ガラス(高層)','内面ガラス','エントランス扉'],'定期清掃':['共用廊下','EV内','屋上']},comments:{'ガラス清掃':'・ロープ作業\n・シャンプースクイジー','定期清掃':'・洗剤散布\n・水拭き'}},
+  {id:'P010',name:'麻布十番パークハウス',addr:'東京都港区麻布十番1-5-22',works:['定期清掃'],areas:{'定期清掃':['共用廊下','1Fエントランス','共用階段','駐輪場']},comments:{'定期清掃':'・洗剤散布\n・ポリッシャー洗浄'}}
+];
+const STAFF = ['兼古　泰士','山田　花子','鈴木　次郎','田中　一郎','佐藤　美咲'];
+const PHASES = ['作業前','作業中','作業後'];
+const PC = ['b','d','a'];
+const SAVE_KEY = 'cleaning_report_save';
+
+// ========== 状態 ==========
+let st = {
+  propId: MASTER[0].id,
+  workIdx: 0,
+  person: STAFF[0],
+  staffNum: 2,
+  checkedAreas: [],
+  activeArea: 0,
+  activePhase: 0,
+  photos: {},      // key: "areaIdx-phaseIdx" -> dataURL
+  comments: {},    // key: areaIdx -> string
+  startTime: null,
+  endTime: null
+};
+let ddOpen = false;
+let genTimer = null;
+
+// ========== helpers ==========
+function prop() { return MASTER.find(m => m.id === st.propId); }
+function work() { return prop().works[st.workIdx]; }
+function areas() { return prop().areas[work()]; }
+function defComment() { return prop().comments[work()] || ''; }
+function photoKey(a, p) { return `${a}-${p}`; }
+function fmtTime(d) {
+  if (!d) return '--:--';
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function today() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function ic(path, size=18, col='currentColor') {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+}
+
+// ========== ローカル保存 ==========
+function saveLocal() {
+  try {
+    // 写真はサイズが大きいので圧縮版のキー一覧のみ保存
+    const data = { ...st, savedAt: Date.now() };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+  } catch(e) {}
+}
+function loadLocal() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (Date.now() - data.savedAt > 24*60*60*1000) { localStorage.removeItem(SAVE_KEY); return null; }
+    return data;
+  } catch(e) { return null; }
+}
+function clearSave() { localStorage.removeItem(SAVE_KEY); }
+
+// ========== 初期化 ==========
+function init() {
+  document.getElementById('prop-count').textContent = `（${MASTER.length}件）`;
+  buildDD();
+  buildStaffPicker();
+  updatePropDisplay();
+  updateWorkPills();
+  updateStaffDisplay();
+
+  // 保存データ確認
+  const saved = loadLocal();
+  const banner = document.getElementById('resume-banner');
+  if (saved && saved.photos && Object.keys(saved.photos).length > 0) {
+    const p = MASTER.find(m => m.id === saved.propId);
+    const pName = p ? p.name : '不明';
+    const wName = p ? p.works[saved.workIdx] : '';
+    const pCount = Object.keys(saved.photos).length;
+    const d = new Date(saved.savedAt);
+    document.getElementById('resume-desc').textContent =
+      `${pName} / ${wName}（${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}）写真${pCount}枚`;
+    banner.style.display = 'flex';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+function resumeFromSave() {
+  const saved = loadLocal();
+  if (!saved) return;
+  Object.assign(st, saved);
+  st.startTime = saved.startTime ? new Date(saved.startTime) : new Date();
+  buildConfirmScreen();
+  goScreen(3);
+}
+
+// ========== ドロップダウン ==========
+function buildDD() {
+  const menu = document.getElementById('dd-menu');
+  menu.innerHTML = MASTER.map(m => `
+    <div class="dd-item ${m.id===st.propId?'on':''}" onclick="selectProp('${m.id}')">
+      <div><div class="di-name">${m.name}</div><div class="di-addr">${m.addr}</div></div>
+      ${m.id===st.propId ? ic('<polyline points="4 12 9 17 20 6"/>',16,'#185FA5') : ''}
+    </div>`).join('');
+}
+function toggleDD() {
+  ddOpen = !ddOpen;
+  const trigger = document.getElementById('dd-trigger');
+  const menu = document.getElementById('dd-menu');
+  const chev = document.getElementById('dd-chevron');
+  const overlay = document.getElementById('dd-overlay');
+  trigger.classList.toggle('open', ddOpen);
+  chev.classList.toggle('open', ddOpen);
+  menu.style.display = ddOpen ? 'block' : 'none';
+  overlay.classList.toggle('show', ddOpen);
+}
+function closeDD() {
+  ddOpen = false;
+  document.getElementById('dd-trigger').classList.remove('open');
+  document.getElementById('dd-menu').style.display = 'none';
+  document.getElementById('dd-chevron').classList.remove('open');
+  document.getElementById('dd-overlay').classList.remove('show');
+}
+function selectProp(id) {
+  st.propId = id;
+  st.workIdx = 0;
+  st.checkedAreas = areas().map((_,i)=>i);
+  closeDD();
+  buildDD();
+  updatePropDisplay();
+  updateWorkPills();
+}
+function updatePropDisplay() {
+  const p = prop();
+  document.getElementById('dd-selected-name').textContent = p.name;
+  document.getElementById('dd-selected-addr').textContent = p.addr;
+}
+
+// ========== 作業内容ピル ==========
+function updateWorkPills() {
+  const pills = document.getElementById('work-pills');
+  pills.innerHTML = prop().works.map((w,i) =>
+    `<div class="work-pill ${st.workIdx===i?'on':''}" onclick="selectWork(${i})">${w}</div>`
+  ).join('');
+}
+function selectWork(i) {
+  st.workIdx = i;
+  st.checkedAreas = areas().map((_,i)=>i);
+  updateWorkPills();
+}
+
+// ========== 担当者 ==========
+function buildStaffPicker() {
+  const sel = document.getElementById('staff-select');
+  sel.innerHTML = STAFF.map(s => `<option value="${s}">${s}</option>`).join('');
+  sel.value = st.person;
+}
+function openStaffPicker() {
+  const sel = document.getElementById('staff-select');
+  sel.value = st.person;
+  sel.focus();
+  sel.size = STAFF.length;
+  // モバイルのネイティブピッカーを使う
+  sel.style.display = 'block';
+  sel.style.position = 'fixed';
+  sel.style.bottom = '0';
+  sel.style.left = '0';
+  sel.style.width = '100%';
+  sel.style.zIndex = '200';
+  sel.style.fontSize = '18px';
+  sel.style.padding = '8px';
+  sel.addEventListener('blur', hideStaffPicker, {once:true});
+  sel.addEventListener('change', ()=>{ hideStaffPicker(); }, {once:true});
+}
+function hideStaffPicker() {
+  const sel = document.getElementById('staff-select');
+  sel.style.display = 'none';
+}
+function onStaffChange(val) {
+  st.person = val;
+  updateStaffDisplay();
+  hideStaffPicker();
+}
+function updateStaffDisplay() {
+  document.getElementById('staff-display').textContent = st.person;
+}
+
+// ========== 作業開始 ==========
+function startWork() {
+  st.startTime = new Date();
+  st.checkedAreas = areas().map((_,i)=>i);
+  st.photos = {};
+  st.comments = {};
+  st.activeArea = st.checkedAreas[0];
+  st.activePhase = 0;
+  st.staffNum = parseInt(document.getElementById('staff-num').value) || 2;
+  saveLocal();
+  buildAreaList();
+  document.getElementById('start-time-display').textContent = fmtTime(st.startTime);
+  document.getElementById('prop-work-display').textContent = `${prop().name} / ${work()}`;
+  document.getElementById('area-label').textContent = `清掃するエリアを選択（全${areas().length}エリア）`;
+  goScreen(1);
+}
+
+// ========== エリア選択 ==========
+function buildAreaList() {
+  const list = document.getElementById('area-list');
+  list.innerHTML = areas().map((a,i) => `
+    <div class="area-item ${st.checkedAreas.includes(i)?'on':''}" id="area-item-${i}" onclick="toggleArea(${i})" style="margin-bottom:8px">
+      <div class="chk ${st.checkedAreas.includes(i)?'on':''}" id="chk-${i}">
+        ${st.checkedAreas.includes(i) ? ic('<polyline points="4 12 9 17 20 6"/>',14,'white') : ''}
+      </div>
+      <span>${a}</span>
+    </div>`).join('');
+  updateShootBtn();
+}
+function toggleArea(i) {
+  const idx = st.checkedAreas.indexOf(i);
+  if (idx >= 0) { if (st.checkedAreas.length > 1) st.checkedAreas.splice(idx, 1); }
+  else { st.checkedAreas.push(i); st.checkedAreas.sort((a,b)=>a-b); }
+  buildAreaList();
+}
+function updateShootBtn() {
+  document.getElementById('shoot-btn').textContent = `撮影を開始する（${st.checkedAreas.length}エリア）`;
+}
+
+// ========== 撮影開始 ==========
+function startShooting() {
+  if (st.checkedAreas.length === 0) return;
+  st.activeArea = st.checkedAreas[0];
+  st.activePhase = 0;
+  updateShootScreen();
+  goScreen(2);
+}
+
+// ========== 撮影画面 ==========
+function updateShootScreen() {
+  const al = areas();
+  const ai = st.activeArea;
+  const ph = st.activePhase;
+  const ci = st.checkedAreas.indexOf(ai);
+  const done = Object.keys(st.photos).length;
+  const total = st.checkedAreas.length * 3;
+  const key = photoKey(ai, ph);
+  const hasPhoto = !!st.photos[key];
+
+  document.getElementById('shoot-title').textContent = al[ai];
+  document.getElementById('area-counter').textContent = `エリア ${ci+1}/${st.checkedAreas.length}`;
+  document.getElementById('photo-counter').textContent = `撮影 ${done}/${total}`;
+  document.getElementById('prog-fill').style.width = total > 0 ? Math.round(done/total*100)+'%' : '0%';
+
+  // エリアドット
+  const dots = document.getElementById('area-dots');
+  dots.innerHTML = st.checkedAreas.map((_,i) =>
+    `<div class="prog-dot ${i<ci?'done':i===ci?'cur':''}"></div>`
+  ).join('');
+
+  // フェーズタブ
+  PHASES.forEach((_,i) => {
+    const tab = document.getElementById(`tab-${i}`);
+    tab.className = 'phase-tab' + (ph===i?' on':'');
+  });
+
+  // 写真スロット
+  const slot = document.getElementById('photo-slot');
+  const placeholder = document.getElementById('photo-placeholder');
+  const preview = document.getElementById('photo-preview');
+  const retake = document.getElementById('retake-btn');
+  if (hasPhoto) {
+    slot.classList.add('taken');
+    preview.src = st.photos[key];
+    preview.style.display = 'block';
+    placeholder.style.display = 'none';
+    retake.style.display = 'block';
+  } else {
+    slot.classList.remove('taken');
+    preview.style.display = 'none';
+    preview.src = '';
+    placeholder.style.display = 'flex';
+    retake.style.display = 'none';
+  }
+
+  // コメント欄
+  const commentSec = document.getElementById('comment-section');
+  const commentTxt = document.getElementById('comment-text');
+  if (ph === 1) {
+    commentSec.style.display = 'block';
+    commentTxt.value = st.comments[ai] !== undefined ? st.comments[ai] : defComment();
+  } else {
+    commentSec.style.display = 'none';
+  }
+
+  // カメラボタン
+  document.getElementById('cam-btn-label').textContent = hasPhoto ? '撮り直す' : 'カメラで撮影';
+
+  // 次へボタン
+  const nextBtn = document.getElementById('next-btn');
+  const nextLabel = document.getElementById('next-btn-label');
+  const lastArea = ci === st.checkedAreas.length - 1;
+  if (ph < 2) {
+    nextLabel.textContent = `次のフェーズへ（${PHASES[ph+1]}）`;
+    nextBtn.className = 'btn btn-secondary';
+    nextBtn.style.display = 'flex';
+  } else if (!lastArea) {
+    nextLabel.textContent = `次のエリアへ → ${al[st.checkedAreas[ci+1]]}`;
+    nextBtn.className = 'btn btn-secondary';
+    nextBtn.style.display = 'flex';
+  } else {
+    nextLabel.textContent = '全エリア完了・確認へ';
+    nextBtn.className = 'btn btn-green';
+    nextBtn.style.display = 'flex';
+  }
+}
+
+function setPhase(p) {
+  // コメント保存
+  if (st.activePhase === 1) {
+    st.comments[st.activeArea] = document.getElementById('comment-text').value;
+  }
+  st.activePhase = p;
+  saveLocal();
+  updateShootScreen();
+}
+
+function triggerCamera(e) {
+  if (e) e.stopPropagation();
+  document.getElementById('camera-input').click();
+}
+
+function onPhotoTaken(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    // 画像リサイズ（Canvas で最大 1200px に圧縮）
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const MAX = 1200;
+      let w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+        else { w = Math.round(w * MAX / h); h = MAX; }
+      }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      const dataURL = canvas.toDataURL('image/jpeg', 0.82);
+      st.photos[photoKey(st.activeArea, st.activePhase)] = dataURL;
+      saveLocal();
+      updateShootScreen();
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function nextStep() {
+  // コメント保存
+  if (st.activePhase === 1) {
+    st.comments[st.activeArea] = document.getElementById('comment-text').value;
+  }
+  const ci = st.checkedAreas.indexOf(st.activeArea);
+  const lastArea = ci === st.checkedAreas.length - 1;
+  if (st.activePhase < 2) {
+    st.activePhase++;
+  } else if (!lastArea) {
+    st.activeArea = st.checkedAreas[ci + 1];
+    st.activePhase = 0;
+  } else {
+    // 全完了 → 確認画面へ
+    st.endTime = new Date();
+    saveLocal();
+    buildConfirmScreen();
+    goScreen(3);
+    return;
+  }
+  saveLocal();
+  updateShootScreen();
+}
+
+// ========== 確認画面 ==========
+function buildConfirmScreen() {
+  const al = areas();
+  const total = Object.keys(st.photos).length;
+  const dur = st.startTime && st.endTime
+    ? Math.round((st.endTime - st.startTime) / 60000) + '分'
+    : (st.startTime ? '作業中' : '—');
+
+  const thumbs = st.checkedAreas.flatMap(ai =>
+    PHASES.map((_,pi) => {
+      const key = photoKey(ai, pi);
+      const src = st.photos[key];
+      return `<div class="thumb">
+        ${src ? `<img src="${src}" alt="">` : `<div class="thumb-ph">${ic('<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="4"/>',18,'#7a9ab8')}</div>`}
+        <span class="thumb-badge ${PC[pi]}">${PHASES[pi][2]}</span>
+        <span class="thumb-label">${al[ai]?al[ai].substring(0,3):''}</span>
+      </div>`;
+    })
+  ).join('');
+
+  document.getElementById('confirm-body').innerHTML = `
+    <div class="stats">
+      <div class="stat"><div class="stat-n">${st.checkedAreas.length}</div><div class="stat-l">エリア数</div></div>
+      <div class="stat"><div class="stat-n">${total}</div><div class="stat-l">撮影枚数</div></div>
+      <div class="stat"><div class="stat-n">${dur}</div><div class="stat-l">作業時間</div></div>
+    </div>
+    <div class="card">
+      <div class="card-row"><span class="rk">物件</span><span class="rv">${prop().name}</span></div>
+      <div class="card-row"><span class="rk">作業内容</span><span class="rv">${work()}</span></div>
+      <div class="card-row"><span class="rk">担当者</span><span class="rv">${st.person}</span></div>
+      <div class="card-row"><span class="rk">開始</span><span class="rv">${fmtTime(st.startTime ? new Date(st.startTime) : null)}</span></div>
+      <div class="card-row"><span class="rk">終了</span><span class="rv">${fmtTime(st.endTime ? new Date(st.endTime) : null)}</span></div>
+      <div class="card-row"><span class="rk">作業人数</span><span class="rv">${st.staffNum}名</span></div>
+    </div>
+    <div>
+      <span class="lbl">撮影写真（${total}枚）</span>
+      <div class="thumb-grid">${thumbs}</div>
+    </div>
+    <div>
+      <span class="lbl">連絡事項・特記事項</span>
+      <textarea class="txt-area" id="remarks" rows="2" placeholder="特記事項なし"></textarea>
+    </div>
+    <div class="save-badge">
+      ${ic('<path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v14a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/>',15,'#27500A')}
+      全データをローカルに保存済み
+    </div>
+    <button class="btn btn-green" onclick="startGenerate()">
+      ${ic('<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>',20,'#1a1a18')}
+      レポートを生成する
+    </button>
+    <button class="btn btn-secondary" onclick="goScreen(2)">修正する</button>
+  `;
+}
+
+// ========== レポート生成（デモ） ==========
+function startGenerate() {
+  st.endTime = new Date();
+  const total = Object.keys(st.photos).length;
+  let uploaded = 0;
+  goScreen('3b');
+
+  genTimer = setInterval(() => {
+    uploaded = Math.min(uploaded + 1, total);
+    const pct = Math.round(uploaded / Math.max(total,1) * 80);
+    document.getElementById('gen-prog').style.width = pct + '%';
+    document.getElementById('loading-sub').innerHTML =
+      `${uploaded} / ${total}枚完了<br>通信が切れた場合も自動で再開します`;
+    if (uploaded >= total) {
+      clearInterval(genTimer);
+      document.getElementById('loading-msg').textContent = 'レポートを生成中...';
+      document.getElementById('gen-prog').style.width = '95%';
+      setTimeout(() => {
+        document.getElementById('gen-prog').style.width = '100%';
+        setTimeout(finishGenerate, 600);
+      }, 1200);
+    }
+  }, 400);
+}
+
+function finishGenerate() {
+  clearInterval(genTimer);
+  const fname = `${prop().name}_${work()}_${today()}.xlsx`;
+  const dur = st.startTime && st.endTime
+    ? Math.round((new Date(st.endTime) - new Date(st.startTime)) / 60000) + '分'
+    : '—';
+  document.getElementById('done-filename').textContent = fname;
+  document.getElementById('done-duration').textContent = dur;
+  clearSave();
+  goScreen(4);
+}
+
+function simulateError() {
+  clearInterval(genTimer);
+  const total = Object.keys(st.photos).length;
+  document.getElementById('upload-status').textContent = `3/${total}枚 完了`;
+  goScreen('3c');
+}
+
+function retryGenerate() {
+  goScreen('3b');
+  setTimeout(startGenerate, 300);
+}
+
+function openDrive() {
+  alert('※デモ：実際の実装ではGoogle DriveのURLが開きます');
+}
+
+function resetApp() {
+  clearInterval(genTimer);
+  clearSave();
+  st = {
+    propId: MASTER[0].id, workIdx: 0, person: STAFF[0], staffNum: 2,
+    checkedAreas: [], activeArea: 0, activePhase: 0,
+    photos: {}, comments: {}, startTime: null, endTime: null
+  };
+  updatePropDisplay();
+  updateWorkPills();
+  buildDD();
+  document.getElementById('resume-banner').style.display = 'none';
+  goScreen(0);
+}
+
+// ========== 画面遷移 ==========
+function goScreen(id) {
+  closeDD();
+  const idStr = String(id);
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById(`screen-${idStr}`);
+  if (target) {
+    target.classList.add('active');
+    // スクロールをトップに戻す
+    const body = target.querySelector('.screen-body');
+    if (body) body.scrollTop = 0;
+  }
+}
+
+// ========== 起動 ==========
+init();
+</script>
+</body>
+</html>
