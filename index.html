@@ -65,7 +65,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','N
 .work-pill:active{opacity:.8}
 
 /* ---- Buttons ---- */
-.btn{width:100%;height:70px;border:none;border-radius:14px;font-size:17px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:opacity .15s;font-family:inherit;-webkit-font-smoothing:antialiased}
+.btn{width:100%;height:72px;border:none;border-radius:14px;font-size:17px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:opacity .15s;font-family:inherit;-webkit-font-smoothing:antialiased}
 .btn.btn-xl{height:76px!important;font-size:18px!important}
 .btn:active{opacity:.85}
 .btn-primary{background:#185FA5;color:#fff}
@@ -81,13 +81,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','N
 .card-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f0f0ea;font-size:15px}
 .card-row:last-child{border:none}
 .card-row .rk{color:#6b6b65}
-.card-row .rv{font-weight:500;text-align:right}
+.card-row .rv{font-weight:500;text-align:right;font-size:15px}
 
 .time-chip{background:#E6F1FB;border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
 .time-chip .tc-l{font-size:12px;color:#185FA5;font-weight:500}
 .time-chip .tc-v{font-size:20px;font-weight:500;color:#0C447C}
 
-.info-chip{background:#E6F1FB;border-radius:8px;padding:9px 13px;font-size:13px;color:#0C447C;font-weight:500}
+.info-chip{background:#E6F1FB;border-radius:8px;padding:11px 14px;font-size:17px;color:#0C447C;font-weight:500}
 
 .save-badge{background:#EAF3DE;border:1px solid #C0DD97;border-radius:9px;padding:10px 14px;display:flex;align-items:center;gap:9px;font-size:12px;color:#27500A}
 .save-badge svg{flex-shrink:0}
@@ -143,7 +143,7 @@ textarea.txt-area:focus{border-color:#185FA5}
 /* ---- Stats ---- */
 .stats{display:flex;gap:8px}
 .stat{flex:1;background:#E6F1FB;border-radius:10px;padding:12px 8px;text-align:center}
-.stat-n{font-size:26px;font-weight:500;color:#0C447C}
+.stat-n{font-size:28px;font-weight:500;color:#0C447C}
 .stat-l{font-size:11px;color:#185FA5;margin-top:3px}
 
 /* ---- Thumb grid ---- */
@@ -195,16 +195,21 @@ textarea.txt-area:focus{border-color:#185FA5}
 #dd-overlay{position:fixed;inset:0;z-index:50;display:none}
 #dd-overlay.show{display:block}
 
-.lb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.lb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:1000;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px 0}
 .lb-overlay.show{display:flex}
-.lb-img-wrap{width:100%;max-width:100vw;display:flex;align-items:center;justify-content:center;padding:0 12px}
-.lb-img-wrap img{max-width:100%;max-height:70vh;border-radius:10px;object-fit:contain}
-.lb-label{font-size:16px;font-weight:500;color:#fff;letter-spacing:.05em}
-.lb-sub{font-size:13px;color:rgba(255,255,255,.6)}
-.lb-close{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.15);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:8px}
-.lb-nav{display:flex;gap:16px;align-items:center}
-.lb-nav-btn{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:20px}
-.lb-nav-btn:active{background:rgba(255,255,255,.3)}
+.lb-header{width:100%;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 16px}
+.lb-label{font-size:17px;font-weight:500;color:#fff;letter-spacing:.02em}
+.lb-sub{font-size:14px;color:rgba(255,255,255,.7)}
+.lb-img-wrap{width:100%;display:flex;align-items:center;justify-content:center;padding:0 12px}
+.lb-img-wrap img{max-width:100%;max-height:60vh;border-radius:12px;object-fit:contain}
+.lb-footer{width:100%;display:flex;flex-direction:column;align-items:center;gap:12px}
+.lb-nav{display:flex;gap:24px;align-items:center}
+.lb-nav-btn{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.18);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:22px}
+.lb-nav-btn:active{background:rgba(255,255,255,.35)}
+.lb-pos{font-size:14px;color:rgba(255,255,255,.6);min-width:48px;text-align:center}
+.lb-close{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.18);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.lb-close:active{background:rgba(255,255,255,.35)}
+.lb-hint{font-size:12px;color:rgba(255,255,255,.4)}
 </style>
 </head>
 <body>
@@ -311,7 +316,7 @@ textarea.txt-area:focus{border-color:#185FA5}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
         戻る
       </button>
-      <h1 id="shoot-title" style="font-size:14px"></h1>
+      <h1 id="shoot-title" style="font-size:15px"></h1>
       <span class="step-badge">3 / 5</span>
     </div>
     <div class="screen-body">
@@ -878,15 +883,14 @@ function buildConfirmScreen() {
     ? Math.round((st.endTime - st.startTime) / 60000) + '分'
     : (st.startTime ? '作業中' : '—');
 
-  // ライトボックス用データ構築
-  const lbData = st.checkedAreas.flatMap(ai =>
+  // ライトボックス用データをグローバル変数に格納（base64安全対策）
+  window._lbItems = st.checkedAreas.flatMap(ai =>
     PHASES.map((_,pi) => ({
       src: st.photos[photoKey(ai,pi)] || '',
       area: al[ai] || '',
       phase: PHASES[pi]
     }))
   );
-  const lbJson = JSON.stringify(lbData).replace(/`/g,"'");
 
   const thumbs = st.checkedAreas.map((ai, areaOrder) => {
     const areaName = al[ai] || '';
@@ -894,8 +898,8 @@ function buildConfirmScreen() {
       const key = photoKey(ai, pi);
       const src = st.photos[key];
       const lbItemIdx = areaOrder * 3 + pi;
-      const clickable = src ? `onclick="openLightbox(JSON.parse('${lbJson}'),${lbItemIdx})" style="cursor:pointer"` : '';
-      return `<div class="thumb-wrap" ${clickable}>
+      const clickAttr = src ? `onclick="openLightbox(window._lbItems,${lbItemIdx})" style="cursor:pointer"` : '';
+      return `<div class="thumb-wrap" ${clickAttr}>
         <div class="thumb">
           ${src
             ? `<img src="${src}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`
@@ -936,11 +940,11 @@ function buildConfirmScreen() {
       ${ic('<path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v14a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/>',15,'#27500A')}
       全データをローカルに保存済み
     </div>
-    <button class="btn btn-green btn-xl" onclick="startGenerate()">
+    <button class="btn btn-green" style="height:76px;font-size:18px" onclick="startGenerate()">
       ${ic('<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>',20,'white')}
       レポートを生成する
     </button>
-    <button class="btn btn-secondary btn-xl" onclick="goScreen(2)">修正する</button>
+    <button class="btn btn-secondary" style="height:76px;font-size:18px" onclick="goScreen(2)">修正する</button>
   `;
 }
 
@@ -1030,6 +1034,7 @@ function goScreen(id) {
 // ========== ライトボックス ==========
 let lbItems = [];
 let lbIdx = 0;
+let lbTouchStartX = 0;
 
 function openLightbox(items, idx) {
   lbItems = items;
@@ -1041,14 +1046,24 @@ function openLightbox(items, idx) {
 
 function lbUpdate() {
   const item = lbItems[lbIdx];
-  document.getElementById('lb-img').src = item.src;
+  const img = document.getElementById('lb-img');
+  img.style.opacity = '0';
+  img.src = item.src;
+  img.onload = () => { img.style.transition = 'opacity .15s'; img.style.opacity = '1'; };
   document.getElementById('lb-label').textContent = item.area;
   document.getElementById('lb-sub').textContent = item.phase;
   document.getElementById('lb-pos').textContent = `${lbIdx + 1} / ${lbItems.length}`;
 }
 
 function lbNav(dir) {
-  lbIdx = (lbIdx + dir + lbItems.length) % lbItems.length;
+  // 写真がない（src空）はスキップ
+  let next = (lbIdx + dir + lbItems.length) % lbItems.length;
+  let tries = 0;
+  while (!lbItems[next].src && tries < lbItems.length) {
+    next = (next + dir + lbItems.length) % lbItems.length;
+    tries++;
+  }
+  lbIdx = next;
   lbUpdate();
 }
 
@@ -1061,25 +1076,43 @@ function lbBgClose(e) {
   if (e.target === document.getElementById('lb-overlay')) lbClose();
 }
 
+// スワイプ対応
+document.addEventListener('touchstart', e => {
+  if (document.getElementById('lb-overlay').classList.contains('show')) {
+    lbTouchStartX = e.touches[0].clientX;
+  }
+}, { passive: true });
+
+document.addEventListener('touchend', e => {
+  if (!document.getElementById('lb-overlay').classList.contains('show')) return;
+  const dx = e.changedTouches[0].clientX - lbTouchStartX;
+  if (Math.abs(dx) > 50) lbNav(dx < 0 ? 1 : -1);
+}, { passive: true });
+
 // ========== 起動 ==========
 init();
 </script>
 
 <!-- ライトボックス -->
 <div class="lb-overlay" id="lb-overlay" onclick="lbBgClose(event)">
-  <div class="lb-label" id="lb-label"></div>
-  <div class="lb-sub" id="lb-sub"></div>
-  <div class="lb-img-wrap">
+  <div class="lb-header">
+    <div class="lb-label" id="lb-label"></div>
+    <div class="lb-sub" id="lb-sub"></div>
+  </div>
+  <div class="lb-img-wrap" id="lb-img-wrap">
     <img id="lb-img" src="" alt="">
   </div>
-  <div class="lb-nav">
-    <button class="lb-nav-btn" onclick="lbNav(-1)">&#8592;</button>
-    <div style="font-size:13px;color:rgba(255,255,255,.6)" id="lb-pos"></div>
-    <button class="lb-nav-btn" onclick="lbNav(1)">&#8594;</button>
+  <div class="lb-footer">
+    <div class="lb-nav">
+      <button class="lb-nav-btn" onclick="lbNav(-1)" aria-label="前の写真">&#8592;</button>
+      <div class="lb-pos" id="lb-pos"></div>
+      <button class="lb-nav-btn" onclick="lbNav(1)" aria-label="次の写真">&#8594;</button>
+    </div>
+    <div class="lb-hint">← → で前後の写真に移動</div>
+    <button class="lb-close" onclick="lbClose()" aria-label="閉じる">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
   </div>
-  <button class="lb-close" onclick="lbClose()">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-  </button>
 </div>
 </body>
 </html>
