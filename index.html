@@ -13,7 +13,7 @@ html,body{height:100%;overflow:hidden}
 body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:#f5f5f0;color:#1a1a18;font-size:17px;line-height:1.6}
 
 /* ---- App shell ---- */
-#app{height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+#app{height:100dvh;display:flex;flex-direction:column;overflow:hidden;padding-top:env(safe-area-inset-top,0px)}
 
 /* ---- Header ---- */
 .hdr{flex-shrink:0;height:56px;background:#fff;border-bottom:1px solid #e8e8e2;display:flex;align-items:center;padding:0 16px;gap:10px;position:relative}
@@ -28,7 +28,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','N
 .step-badge{position:absolute;right:16px;font-size:11px;color:#185FA5;background:#E6F1FB;padding:4px 10px;border-radius:20px;font-weight:500;white-space:nowrap}
 
 /* ---- Scrollable body ---- */
-.screen-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;display:flex;flex-direction:column;gap:12px;background:#f5f5f0}
+.screen-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px;background:#f5f5f0}
 .screen-body.center{justify-content:center;align-items:center;gap:20px}
 
 /* ---- Form elements ---- */
@@ -65,7 +65,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','N
 .work-pill:active{opacity:.8}
 
 /* ---- Buttons ---- */
-.btn{width:100%;height:72px;border:none;border-radius:14px;font-size:17px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:opacity .15s;font-family:inherit;-webkit-font-smoothing:antialiased}
+.btn{width:100%;min-height:72px;height:72px;border:none;border-radius:14px;font-size:17px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:opacity .15s;font-family:inherit;-webkit-font-smoothing:antialiased;box-sizing:border-box}
 .btn.btn-xl{height:76px!important;font-size:18px!important}
 .btn:active{opacity:.85}
 .btn-primary{background:#185FA5;color:#fff}
@@ -195,20 +195,21 @@ textarea.txt-area:focus{border-color:#185FA5}
 #dd-overlay{position:fixed;inset:0;z-index:50;display:none}
 #dd-overlay.show{display:block}
 
-.lb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:1000;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px 0}
+.lb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:1000;flex-direction:column;align-items:center;justify-content:space-between;padding:env(safe-area-inset-top,16px) 0 env(safe-area-inset-bottom,16px)}
 .lb-overlay.show{display:flex}
-.lb-header{width:100%;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 16px}
-.lb-label{font-size:17px;font-weight:500;color:#fff;letter-spacing:.02em}
-.lb-sub{font-size:14px;color:rgba(255,255,255,.7)}
-.lb-img-wrap{width:100%;display:flex;align-items:center;justify-content:center;padding:0 12px}
-.lb-img-wrap img{max-width:100%;max-height:60vh;border-radius:12px;object-fit:contain}
-.lb-footer{width:100%;display:flex;flex-direction:column;align-items:center;gap:12px}
+.lb-top-bar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;flex-shrink:0}
+.lb-close{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.18);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.lb-close:active{background:rgba(255,255,255,.35)}
+.lb-title{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;padding:0 8px}
+.lb-label{font-size:16px;font-weight:500;color:#fff;letter-spacing:.02em}
+.lb-sub{font-size:13px;color:rgba(255,255,255,.7)}
+.lb-img-area{flex:1;width:100%;display:flex;align-items:center;justify-content:center;padding:8px 12px;min-height:0}
+.lb-img-area img{max-width:100%;max-height:100%;border-radius:12px;object-fit:contain}
+.lb-bottom-bar{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 0;flex-shrink:0}
 .lb-nav{display:flex;gap:24px;align-items:center}
 .lb-nav-btn{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.18);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:22px}
 .lb-nav-btn:active{background:rgba(255,255,255,.35)}
 .lb-pos{font-size:14px;color:rgba(255,255,255,.6);min-width:48px;text-align:center}
-.lb-close{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.18);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.lb-close:active{background:rgba(255,255,255,.35)}
 .lb-hint{font-size:12px;color:rgba(255,255,255,.4)}
 </style>
 </head>
@@ -940,11 +941,11 @@ function buildConfirmScreen() {
       ${ic('<path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v14a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/>',15,'#27500A')}
       全データをローカルに保存済み
     </div>
-    <button class="btn btn-green" style="height:76px;font-size:18px" onclick="startGenerate()">
+    <button class="btn btn-green" style="height:76px;min-height:76px;font-size:18px" onclick="startGenerate()">
       ${ic('<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>',20,'white')}
       レポートを生成する
     </button>
-    <button class="btn btn-secondary" style="height:76px;font-size:18px" onclick="goScreen(2)">修正する</button>
+    <button class="btn btn-secondary" style="height:76px;min-height:76px;font-size:18px" onclick="goScreen(2)">修正する</button>
   `;
 }
 
@@ -1095,23 +1096,26 @@ init();
 
 <!-- ライトボックス -->
 <div class="lb-overlay" id="lb-overlay" onclick="lbBgClose(event)">
-  <div class="lb-header">
-    <div class="lb-label" id="lb-label"></div>
-    <div class="lb-sub" id="lb-sub"></div>
+  <div class="lb-top-bar">
+    <button class="lb-close" onclick="lbClose()" aria-label="閉じる">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="lb-title">
+      <div class="lb-label" id="lb-label"></div>
+      <div class="lb-sub" id="lb-sub"></div>
+    </div>
+    <div style="width:52px"></div>
   </div>
-  <div class="lb-img-wrap" id="lb-img-wrap">
+  <div class="lb-img-area">
     <img id="lb-img" src="" alt="">
   </div>
-  <div class="lb-footer">
+  <div class="lb-bottom-bar">
     <div class="lb-nav">
       <button class="lb-nav-btn" onclick="lbNav(-1)" aria-label="前の写真">&#8592;</button>
       <div class="lb-pos" id="lb-pos"></div>
       <button class="lb-nav-btn" onclick="lbNav(1)" aria-label="次の写真">&#8594;</button>
     </div>
-    <div class="lb-hint">← → で前後の写真に移動</div>
-    <button class="lb-close" onclick="lbClose()" aria-label="閉じる">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
+    <div class="lb-hint">左右スワイプまたは矢印で移動</div>
   </div>
 </div>
 </body>
