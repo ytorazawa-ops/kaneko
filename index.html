@@ -10,16 +10,20 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:#f5f5f0;color:#1a1a18;font-size:16px;line-height:1.5}
+body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:#f5f5f0;color:#1a1a18;font-size:17px;line-height:1.6}
 
 /* ---- App shell ---- */
 #app{height:100dvh;display:flex;flex-direction:column;overflow:hidden}
 
 /* ---- Header ---- */
 .hdr{flex-shrink:0;height:56px;background:#fff;border-bottom:1px solid #e8e8e2;display:flex;align-items:center;padding:0 16px;gap:10px;position:relative}
+.hdr.hdr-logo-bg{background:#185FA5;border-bottom:none}
+.hdr.hdr-logo-bg h1{color:white}
+.hdr.hdr-logo-bg .step-badge{background:rgba(255,255,255,.2);color:white}
 .hdr-logo{width:32px;height:32px;background:#185FA5;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hdr-logo-img{display:flex;align-items:center;flex-shrink:0;padding:0 4px}
 .hdr-logo svg{width:18px;height:18px}
-.hdr h1{font-size:16px;font-weight:500;flex:1;text-align:center}
+.hdr h1{font-size:17px;font-weight:500;flex:1;text-align:center}
 .hdr .back-btn{position:absolute;left:16px;display:flex;align-items:center;gap:4px;font-size:14px;color:#185FA5;font-weight:500;cursor:pointer;padding:8px 0}
 .step-badge{position:absolute;right:16px;font-size:11px;color:#185FA5;background:#E6F1FB;padding:4px 10px;border-radius:20px;font-weight:500;white-space:nowrap}
 
@@ -28,19 +32,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','N
 .screen-body.center{justify-content:center;align-items:center;gap:20px}
 
 /* ---- Form elements ---- */
-.lbl{font-size:12px;font-weight:500;color:#6b6b65;margin-bottom:6px;display:block;letter-spacing:.02em}
+.lbl{font-size:13px;font-weight:500;color:#6b6b65;margin-bottom:7px;display:block;letter-spacing:.02em}
 .lbl span{font-weight:400;color:#999}
 
 .dd-wrap{position:relative}
 .dd-trigger{width:100%;background:#fff;border:1px solid #d8d8d0;border-radius:10px;padding:13px 14px;font-size:15px;color:#1a1a18;display:flex;align-items:flex-start;justify-content:space-between;cursor:pointer;gap:8px;min-height:52px}
 .dd-trigger.open{border-color:#185FA5;border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom-color:transparent}
 .dd-val-wrap{flex:1;min-width:0}
-.dd-name{font-size:15px;font-weight:500;color:#1a1a18}
+.dd-name{font-size:17px;font-weight:500;color:#1a1a18}
 .dd-addr{font-size:11px;color:#888;margin-top:2px}
 .dd-chevron{flex-shrink:0;margin-top:3px;transition:transform .2s;color:#999}
 .dd-chevron.open{transform:rotate(180deg)}
 .dd-menu{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #185FA5;border-top:none;border-bottom-left-radius:10px;border-bottom-right-radius:10px;overflow-y:auto;max-height:280px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.1)}
-.dd-item{padding:12px 14px;font-size:14px;color:#1a1a18;cursor:pointer;border-bottom:0.5px solid #f0f0ea;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;transition:background .1s;user-select:none}
+.dd-item{padding:14px 14px;font-size:16px;color:#1a1a18;cursor:pointer;border-bottom:0.5px solid #f0f0ea;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;transition:background .1s;user-select:none}
 .dd-item:last-child{border-bottom:none}
 .dd-item:active{background:#E6F1FB}
 .dd-item.on{background:#E6F1FB}
@@ -49,7 +53,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','N
 .dd-item .di-addr{font-size:11px;color:#888;margin-top:2px}
 .dd-check{flex-shrink:0;margin-top:2px;color:#185FA5}
 
-.inp{width:100%;background:#fff;border:1px solid #185FA5;border-radius:10px;padding:14px;font-size:16px;color:#1a1a18;outline:none;font-family:inherit}
+.inp{width:100%;background:#fff;border:1px solid #185FA5;border-radius:10px;padding:14px;font-size:17px;color:#1a1a18;outline:none;font-family:inherit}
 .inp.plain{border-color:#d8d8d0}
 .inp:focus{border-color:#185FA5;box-shadow:0 0 0 3px rgba(24,95,165,.12)}
 .sel-wrap{width:100%;background:#fff;border:1px solid #d8d8d0;border-radius:10px;padding:13px 14px;font-size:15px;color:#1a1a18;display:flex;align-items:center;justify-content:space-between;cursor:pointer;min-height:52px}
@@ -61,7 +65,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','N
 .work-pill:active{opacity:.8}
 
 /* ---- Buttons ---- */
-.btn{width:100%;height:56px;border:none;border-radius:12px;font-size:16px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:opacity .15s;font-family:inherit;-webkit-font-smoothing:antialiased}
+.btn{width:100%;height:70px;border:none;border-radius:14px;font-size:17px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:opacity .15s;font-family:inherit;-webkit-font-smoothing:antialiased}
+.btn-xl{height:76px;font-size:18px}
 .btn:active{opacity:.85}
 .btn-primary{background:#185FA5;color:#fff}
 .btn-green{background:#1d9e75;color:#fff}
@@ -73,7 +78,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','N
 
 /* ---- Cards & chips ---- */
 .card{background:#fff;border:1px solid #e0e0d8;border-radius:12px;padding:14px 16px}
-.card-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:0.5px solid #f0f0ea;font-size:14px}
+.card-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f0f0ea;font-size:15px}
 .card-row:last-child{border:none}
 .card-row .rk{color:#6b6b65}
 .card-row .rv{font-weight:500;text-align:right}
@@ -100,7 +105,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','N
 .section-sep{height:1px;background:#e8e8e2;margin:0 -16px}
 
 /* ---- Area selection ---- */
-.area-item{background:#fff;border:1px solid #d8d8d0;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;font-size:15px;color:#1a1a18;cursor:pointer;user-select:none;transition:all .15s}
+.area-item{background:#fff;border:1px solid #d8d8d0;border-radius:10px;padding:16px;display:flex;align-items:center;gap:12px;font-size:17px;color:#1a1a18;cursor:pointer;user-select:none;transition:all .15s}
 .area-item.on{border-color:#185FA5;background:#E6F1FB}
 .area-item:active{opacity:.8}
 .chk{width:24px;height:24px;border-radius:7px;border:1.5px solid #c8c8c0;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
@@ -118,7 +123,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','N
 
 /* ---- Phase tabs ---- */
 .phase-tabs{display:flex;background:#eeede8;border-radius:10px;padding:3px;gap:2px}
-.phase-tab{flex:1;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;color:#888;cursor:pointer;transition:all .15s;user-select:none}
+.phase-tab{flex:1;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#888;cursor:pointer;transition:all .15s;user-select:none}
 .phase-tab.on{background:#fff;color:#185FA5;border:0.5px solid #d0d8e4}
 
 /* ---- Photo slot ---- */
@@ -143,7 +148,12 @@ textarea.txt-area:focus{border-color:#185FA5}
 
 /* ---- Thumb grid ---- */
 .thumb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.thumb{aspect-ratio:1;background:#c8d4de;border-radius:9px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.area-thumbs-wrap{display:flex;flex-direction:column;gap:14px}
+.area-thumb-group{display:flex;flex-direction:column;gap:6px}
+.area-thumb-label{font-size:17px;font-weight:500;color:#1a1a18;padding:2px 0 6px 0;display:block}
+.thumb-wrap{display:flex;flex-direction:column;border-radius:9px;overflow:hidden;border:1px solid #e0e0d8;background:#fff}
+.thumb-badge{display:block;font-size:14px;font-weight:500;padding:8px 4px;text-align:center;color:#fff}
+.thumb{background:#c8d4de;border-radius:9px 9px 0 0;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;aspect-ratio:1}
 .thumb img{width:100%;height:100%;object-fit:cover}
 .thumb-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#c8d4de}
 .thumb-badge{position:absolute;top:4px;left:4px;font-size:9px;font-weight:500;padding:2px 6px;border-radius:4px;color:#fff}
@@ -185,6 +195,17 @@ textarea.txt-area:focus{border-color:#185FA5}
 /* Overlay for dropdown close */
 #dd-overlay{position:fixed;inset:0;z-index:50;display:none}
 #dd-overlay.show{display:block}
+
+.lb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.lb-overlay.show{display:flex}
+.lb-img-wrap{width:100%;max-width:100vw;display:flex;align-items:center;justify-content:center;padding:0 12px}
+.lb-img-wrap img{max-width:100%;max-height:70vh;border-radius:10px;object-fit:contain}
+.lb-label{font-size:16px;font-weight:500;color:#fff;letter-spacing:.05em}
+.lb-sub{font-size:13px;color:rgba(255,255,255,.6)}
+.lb-close{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.15);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:8px}
+.lb-nav{display:flex;gap:16px;align-items:center}
+.lb-nav-btn{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:20px}
+.lb-nav-btn:active{background:rgba(255,255,255,.3)}
 </style>
 </head>
 <body>
@@ -193,11 +214,9 @@ textarea.txt-area:focus{border-color:#185FA5}
 
   <!-- 画面1: 物件選択 -->
   <div class="screen active" id="screen-0">
-    <div class="hdr">
-      <div class="hdr-logo">
-        <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14V8l6 4-6 4z"/></svg>
-      </div>
-      <h1>清掃作業報告</h1>
+    <div class="hdr hdr-logo-bg">
+      <div class="hdr-logo-img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 215.67 69.45" style="height:22px;width:auto;display:block;fill:white"><path d="M67.89,59.72c1.43,0,2.53.43,3.31,1.3.78.82,1.17,2.01,1.17,3.57,0,1.43-.41,2.59-1.23,3.5-.82.91-1.9,1.36-3.24,1.36-1.43,0-2.53-.41-3.31-1.23-.78-.86-1.17-2.08-1.17-3.63,0-1.43.41-2.59,1.23-3.5.82-.91,1.9-1.36,3.25-1.36M137.31,59.72c1.43,0,2.53.43,3.31,1.3.78.82,1.17,2.01,1.17,3.57,0,1.43-.41,2.59-1.23,3.5-.82.91-1.9,1.36-3.24,1.36-1.43,0-2.53-.41-3.31-1.23-.78-.86-1.17-2.08-1.17-3.63,0-1.43.41-2.59,1.23-3.5.82-.91,1.9-1.36,3.25-1.36M14.71,28.19L42.67,0h17.85l-29.35,28.7,30.82,39.96h-17.46l-22.99-30.54-6.83,6.68v23.86H0V0h14.71v28.19ZM108.29,0c4.58,0,8.44.69,11.57,2.06,3.2,1.31,5.62,3.24,7.26,5.79,1.63,2.55,2.45,5.59,2.45,9.12,0,3.92-.98,7.19-2.94,9.81-1.4,1.87-3.24,3.32-5.52,4.35,1.75.65,3.41,1.53,4.93,2.61,2.29,1.63,4.05,3.66,5.3,6.08,1.24,2.42,1.86,5.16,1.86,8.24,0,3.4-.56,6.41-1.67,9.02-1.11,2.55-2.75,4.68-4.9,6.38-2.16,1.7-4.71,3.01-7.65,3.92-2.88.85-6.11,1.27-9.71,1.27h-30.8V0h29.82ZM181.93,33.53L202.82,0h12.85v68.66h-14.42v-23.54c0-5.89.13-11.18.39-15.89.11-1.63.25-3.26.41-4.88l-17.18,26.66h-6.48l-16.89-26.55c.13,1.42.23,2.85.31,4.29.33,4.58.49,10.04.49,16.38v23.54h-14.42V0h13.44l20.6,33.53ZM92.6,55.91h16.09c2.09,0,3.86-.29,5.3-.88,1.5-.65,2.65-1.64,3.43-2.94.78-1.31,1.18-2.84,1.18-4.61s-.43-3.14-1.28-4.31c-.85-1.18-2.06-2.06-3.63-2.65-1.5-.65-3.34-.98-5.49-.98h-15.6v16.38ZM92.6,27.86h13.93c1.77,0,3.3-.33,4.61-.98,1.31-.65,2.29-1.54,2.94-2.65.72-1.11,1.08-2.42,1.08-3.92,0-2.42-.78-4.28-2.35-5.59-1.57-1.31-3.92-1.96-7.06-1.96h-13.14v15.11Z"/></svg></div>
+      <h1 style="font-size:14px">清掃作業報告</h1>
       <span class="step-badge">1 / 5</span>
     </div>
     <div class="screen-body">
@@ -365,11 +384,9 @@ textarea.txt-area:focus{border-color:#185FA5}
 
   <!-- 画面4b: 生成中 -->
   <div class="screen" id="screen-3b">
-    <div class="hdr">
-      <div class="hdr-logo">
-        <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14V8l6 4-6 4z"/></svg>
-      </div>
-      <h1>レポート生成中</h1>
+    <div class="hdr hdr-logo-bg">
+      <div class="hdr-logo-img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 215.67 69.45" style="height:22px;width:auto;display:block;fill:white"><path d="M67.89,59.72c1.43,0,2.53.43,3.31,1.3.78.82,1.17,2.01,1.17,3.57,0,1.43-.41,2.59-1.23,3.5-.82.91-1.9,1.36-3.24,1.36-1.43,0-2.53-.41-3.31-1.23-.78-.86-1.17-2.08-1.17-3.63,0-1.43.41-2.59,1.23-3.5.82-.91,1.9-1.36,3.25-1.36M137.31,59.72c1.43,0,2.53.43,3.31,1.3.78.82,1.17,2.01,1.17,3.57,0,1.43-.41,2.59-1.23,3.5-.82.91-1.9,1.36-3.24,1.36-1.43,0-2.53-.41-3.31-1.23-.78-.86-1.17-2.08-1.17-3.63,0-1.43.41-2.59,1.23-3.5.82-.91,1.9-1.36,3.25-1.36M14.71,28.19L42.67,0h17.85l-29.35,28.7,30.82,39.96h-17.46l-22.99-30.54-6.83,6.68v23.86H0V0h14.71v28.19ZM108.29,0c4.58,0,8.44.69,11.57,2.06,3.2,1.31,5.62,3.24,7.26,5.79,1.63,2.55,2.45,5.59,2.45,9.12,0,3.92-.98,7.19-2.94,9.81-1.4,1.87-3.24,3.32-5.52,4.35,1.75.65,3.41,1.53,4.93,2.61,2.29,1.63,4.05,3.66,5.3,6.08,1.24,2.42,1.86,5.16,1.86,8.24,0,3.4-.56,6.41-1.67,9.02-1.11,2.55-2.75,4.68-4.9,6.38-2.16,1.7-4.71,3.01-7.65,3.92-2.88.85-6.11,1.27-9.71,1.27h-30.8V0h29.82ZM181.93,33.53L202.82,0h12.85v68.66h-14.42v-23.54c0-5.89.13-11.18.39-15.89.11-1.63.25-3.26.41-4.88l-17.18,26.66h-6.48l-16.89-26.55c.13,1.42.23,2.85.31,4.29.33,4.58.49,10.04.49,16.38v23.54h-14.42V0h13.44l20.6,33.53ZM92.6,55.91h16.09c2.09,0,3.86-.29,5.3-.88,1.5-.65,2.65-1.64,3.43-2.94.78-1.31,1.18-2.84,1.18-4.61s-.43-3.14-1.28-4.31c-.85-1.18-2.06-2.06-3.63-2.65-1.5-.65-3.34-.98-5.49-.98h-15.6v16.38ZM92.6,27.86h13.93c1.77,0,3.3-.33,4.61-.98,1.31-.65,2.29-1.54,2.94-2.65.72-1.11,1.08-2.42,1.08-3.92,0-2.42-.78-4.28-2.35-5.59-1.57-1.31-3.92-1.96-7.06-1.96h-13.14v15.11Z"/></svg></div>
+      <h1 style="font-size:14px">レポート生成中</h1>
       <span class="step-badge">4 / 5</span>
     </div>
     <div class="screen-body">
@@ -389,10 +406,8 @@ textarea.txt-area:focus{border-color:#185FA5}
   <!-- 画面4c: エラー -->
   <div class="screen" id="screen-3c">
     <div class="hdr" style="background:#E24B4A">
-      <div class="hdr-logo" style="background:rgba(255,255,255,.25)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </div>
-      <h1 style="color:white">送信エラー</h1>
+      <div class="hdr-logo-img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 215.67 69.45" style="height:22px;width:auto;display:block;fill:white"><path d="M67.89,59.72c1.43,0,2.53.43,3.31,1.3.78.82,1.17,2.01,1.17,3.57,0,1.43-.41,2.59-1.23,3.5-.82.91-1.9,1.36-3.24,1.36-1.43,0-2.53-.41-3.31-1.23-.78-.86-1.17-2.08-1.17-3.63,0-1.43.41-2.59,1.23-3.5.82-.91,1.9-1.36,3.25-1.36M137.31,59.72c1.43,0,2.53.43,3.31,1.3.78.82,1.17,2.01,1.17,3.57,0,1.43-.41,2.59-1.23,3.5-.82.91-1.9,1.36-3.24,1.36-1.43,0-2.53-.41-3.31-1.23-.78-.86-1.17-2.08-1.17-3.63,0-1.43.41-2.59,1.23-3.5.82-.91,1.9-1.36,3.25-1.36M14.71,28.19L42.67,0h17.85l-29.35,28.7,30.82,39.96h-17.46l-22.99-30.54-6.83,6.68v23.86H0V0h14.71v28.19ZM108.29,0c4.58,0,8.44.69,11.57,2.06,3.2,1.31,5.62,3.24,7.26,5.79,1.63,2.55,2.45,5.59,2.45,9.12,0,3.92-.98,7.19-2.94,9.81-1.4,1.87-3.24,3.32-5.52,4.35,1.75.65,3.41,1.53,4.93,2.61,2.29,1.63,4.05,3.66,5.3,6.08,1.24,2.42,1.86,5.16,1.86,8.24,0,3.4-.56,6.41-1.67,9.02-1.11,2.55-2.75,4.68-4.9,6.38-2.16,1.7-4.71,3.01-7.65,3.92-2.88.85-6.11,1.27-9.71,1.27h-30.8V0h29.82ZM181.93,33.53L202.82,0h12.85v68.66h-14.42v-23.54c0-5.89.13-11.18.39-15.89.11-1.63.25-3.26.41-4.88l-17.18,26.66h-6.48l-16.89-26.55c.13,1.42.23,2.85.31,4.29.33,4.58.49,10.04.49,16.38v23.54h-14.42V0h13.44l20.6,33.53ZM92.6,55.91h16.09c2.09,0,3.86-.29,5.3-.88,1.5-.65,2.65-1.64,3.43-2.94.78-1.31,1.18-2.84,1.18-4.61s-.43-3.14-1.28-4.31c-.85-1.18-2.06-2.06-3.63-2.65-1.5-.65-3.34-.98-5.49-.98h-15.6v16.38ZM92.6,27.86h13.93c1.77,0,3.3-.33,4.61-.98,1.31-.65,2.29-1.54,2.94-2.65.72-1.11,1.08-2.42,1.08-3.92,0-2.42-.78-4.28-2.35-5.59-1.57-1.31-3.92-1.96-7.06-1.96h-13.14v15.11Z"/></svg></div>
+      <h1 style="color:white;font-size:14px">送信エラー</h1>
       <span class="step-badge" style="background:rgba(255,255,255,.25);color:white">4 / 5</span>
     </div>
     <div class="screen-body">
@@ -425,11 +440,9 @@ textarea.txt-area:focus{border-color:#185FA5}
 
   <!-- 画面5: 完了 -->
   <div class="screen" id="screen-4">
-    <div class="hdr">
-      <div class="hdr-logo">
-        <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14V8l6 4-6 4z"/></svg>
-      </div>
-      <h1>作業完了</h1>
+    <div class="hdr hdr-logo-bg">
+      <div class="hdr-logo-img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 215.67 69.45" style="height:22px;width:auto;display:block;fill:white"><path d="M67.89,59.72c1.43,0,2.53.43,3.31,1.3.78.82,1.17,2.01,1.17,3.57,0,1.43-.41,2.59-1.23,3.5-.82.91-1.9,1.36-3.24,1.36-1.43,0-2.53-.41-3.31-1.23-.78-.86-1.17-2.08-1.17-3.63,0-1.43.41-2.59,1.23-3.5.82-.91,1.9-1.36,3.25-1.36M137.31,59.72c1.43,0,2.53.43,3.31,1.3.78.82,1.17,2.01,1.17,3.57,0,1.43-.41,2.59-1.23,3.5-.82.91-1.9,1.36-3.24,1.36-1.43,0-2.53-.41-3.31-1.23-.78-.86-1.17-2.08-1.17-3.63,0-1.43.41-2.59,1.23-3.5.82-.91,1.9-1.36,3.25-1.36M14.71,28.19L42.67,0h17.85l-29.35,28.7,30.82,39.96h-17.46l-22.99-30.54-6.83,6.68v23.86H0V0h14.71v28.19ZM108.29,0c4.58,0,8.44.69,11.57,2.06,3.2,1.31,5.62,3.24,7.26,5.79,1.63,2.55,2.45,5.59,2.45,9.12,0,3.92-.98,7.19-2.94,9.81-1.4,1.87-3.24,3.32-5.52,4.35,1.75.65,3.41,1.53,4.93,2.61,2.29,1.63,4.05,3.66,5.3,6.08,1.24,2.42,1.86,5.16,1.86,8.24,0,3.4-.56,6.41-1.67,9.02-1.11,2.55-2.75,4.68-4.9,6.38-2.16,1.7-4.71,3.01-7.65,3.92-2.88.85-6.11,1.27-9.71,1.27h-30.8V0h29.82ZM181.93,33.53L202.82,0h12.85v68.66h-14.42v-23.54c0-5.89.13-11.18.39-15.89.11-1.63.25-3.26.41-4.88l-17.18,26.66h-6.48l-16.89-26.55c.13,1.42.23,2.85.31,4.29.33,4.58.49,10.04.49,16.38v23.54h-14.42V0h13.44l20.6,33.53ZM92.6,55.91h16.09c2.09,0,3.86-.29,5.3-.88,1.5-.65,2.65-1.64,3.43-2.94.78-1.31,1.18-2.84,1.18-4.61s-.43-3.14-1.28-4.31c-.85-1.18-2.06-2.06-3.63-2.65-1.5-.65-3.34-.98-5.49-.98h-15.6v16.38ZM92.6,27.86h13.93c1.77,0,3.3-.33,4.61-.98,1.31-.65,2.29-1.54,2.94-2.65.72-1.11,1.08-2.42,1.08-3.92,0-2.42-.78-4.28-2.35-5.59-1.57-1.31-3.92-1.96-7.06-1.96h-13.14v15.11Z"/></svg></div>
+      <h1 style="font-size:14px">作業完了</h1>
       <span class="step-badge">5 / 5</span>
     </div>
     <div class="screen-body center">
@@ -866,17 +879,37 @@ function buildConfirmScreen() {
     ? Math.round((st.endTime - st.startTime) / 60000) + '分'
     : (st.startTime ? '作業中' : '—');
 
-  const thumbs = st.checkedAreas.flatMap(ai =>
-    PHASES.map((_,pi) => {
+  // ライトボックス用データ構築
+  const lbData = st.checkedAreas.flatMap(ai =>
+    PHASES.map((_,pi) => ({
+      src: st.photos[photoKey(ai,pi)] || '',
+      area: al[ai] || '',
+      phase: PHASES[pi]
+    }))
+  );
+  const lbJson = JSON.stringify(lbData).replace(/`/g,"'");
+
+  const thumbs = st.checkedAreas.map((ai, areaOrder) => {
+    const areaName = al[ai] || '';
+    const cells = PHASES.map((_,pi) => {
       const key = photoKey(ai, pi);
       const src = st.photos[key];
-      return `<div class="thumb">
-        ${src ? `<img src="${src}" alt="">` : `<div class="thumb-ph">${ic('<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="4"/>',18,'#7a9ab8')}</div>`}
-        <span class="thumb-badge ${PC[pi]}">${PHASES[pi][2]}</span>
-        <span class="thumb-label">${al[ai]?al[ai].substring(0,3):''}</span>
+      const lbItemIdx = areaOrder * 3 + pi;
+      const clickable = src ? `onclick="openLightbox(JSON.parse('${lbJson}'),${lbItemIdx})" style="cursor:pointer"` : '';
+      return `<div class="thumb-wrap" ${clickable}>
+        <div class="thumb">
+          ${src
+            ? `<img src="${src}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`
+            : `<div class="thumb-ph">${ic('<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="4"/>',18,'#7a9ab8')}</div>`}
+        </div>
+        <span class="thumb-badge ${PC[pi]}">${PHASES[pi]}</span>
       </div>`;
-    })
-  ).join('');
+    }).join('');
+    return `<div class="area-thumb-group">
+      <div class="area-thumb-label">${areaName}</div>
+      <div class="thumb-grid">${cells}</div>
+    </div>`;
+  }).join('');
 
   document.getElementById('confirm-body').innerHTML = `
     <div class="stats">
@@ -894,7 +927,7 @@ function buildConfirmScreen() {
     </div>
     <div>
       <span class="lbl">撮影写真（${total}枚）</span>
-      <div class="thumb-grid">${thumbs}</div>
+      <div class="area-thumbs-wrap">${thumbs}</div>
     </div>
     <div>
       <span class="lbl">連絡事項・特記事項</span>
@@ -904,11 +937,11 @@ function buildConfirmScreen() {
       ${ic('<path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v14a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/>',15,'#27500A')}
       全データをローカルに保存済み
     </div>
-    <button class="btn btn-green" onclick="startGenerate()">
-      ${ic('<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>',20,'#1a1a18')}
+    <button class="btn btn-green btn-xl" onclick="startGenerate()">
+      ${ic('<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>',20,'white')}
       レポートを生成する
     </button>
-    <button class="btn btn-secondary" onclick="goScreen(2)">修正する</button>
+    <button class="btn btn-secondary btn-xl" onclick="goScreen(2)">修正する</button>
   `;
 }
 
@@ -994,8 +1027,60 @@ function goScreen(id) {
   }
 }
 
+
+// ========== ライトボックス ==========
+let lbItems = [];
+let lbIdx = 0;
+
+function openLightbox(items, idx) {
+  lbItems = items;
+  lbIdx = idx;
+  lbUpdate();
+  document.getElementById('lb-overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function lbUpdate() {
+  const item = lbItems[lbIdx];
+  document.getElementById('lb-img').src = item.src;
+  document.getElementById('lb-label').textContent = item.area;
+  document.getElementById('lb-sub').textContent = item.phase;
+  document.getElementById('lb-pos').textContent = `${lbIdx + 1} / ${lbItems.length}`;
+}
+
+function lbNav(dir) {
+  lbIdx = (lbIdx + dir + lbItems.length) % lbItems.length;
+  lbUpdate();
+}
+
+function lbClose() {
+  document.getElementById('lb-overlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function lbBgClose(e) {
+  if (e.target === document.getElementById('lb-overlay')) lbClose();
+}
+
 // ========== 起動 ==========
 init();
 </script>
+
+<!-- ライトボックス -->
+<div class="lb-overlay" id="lb-overlay" onclick="lbBgClose(event)">
+  <div class="lb-label" id="lb-label"></div>
+  <div class="lb-sub" id="lb-sub"></div>
+  <div class="lb-img-wrap">
+    <img id="lb-img" src="" alt="">
+  </div>
+  <div class="lb-nav">
+    <button class="lb-nav-btn" onclick="lbNav(-1)">&#8592;</button>
+    <div style="font-size:13px;color:rgba(255,255,255,.6)" id="lb-pos"></div>
+    <button class="lb-nav-btn" onclick="lbNav(1)">&#8594;</button>
+  </div>
+  <button class="lb-close" onclick="lbClose()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
 </body>
 </html>
